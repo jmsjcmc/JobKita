@@ -1,36 +1,53 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { Navigate, Route, Routes } from "react-router-dom";
+import "./App.css";
+import Login from "./pages/Auth/Login";
+import SignUp from "./pages/Auth/SignUp";
+import { Toaster } from "react-hot-toast";
+import LandingPage from "./pages/LandingPage/LandingPage";
+import JobSeekerDashboard from "./pages/JobSeeker/JobSeekerDashboard";
+import JobDetails from "./pages/JobSeeker/JobDetails";
+import ProtectedRoute from "./routes/ProtectedRoute";
+import EmployerDashboard from "./pages/Employer/EmployerDashboard";
+import JobPostingForm from "./pages/Employer/JobPostingForm";
+import ApplicationViewer from "./pages/Employer/ApplicationViewer";
+import EmployerProfilePage from "./pages/Employer/EmployerProfilePage";
+import SavedJobs from "./pages/JobSeeker/SavedJObs";
+import UserProfile from "./pages/JobSeeker/UserProfile";
+import ManageJobs from "./pages/Employer/ManageJobs";
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-      <p className='text-blue-500'>Test</p>
-    </>
-  )
+    <div>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/sign-in" element={<Login />} />
+        <Route path="/sign-up" element={<SignUp />} />
+
+        <Route path="/find-job" element={<JobSeekerDashboard />} />
+        <Route path="/job/:jobId" element={<JobDetails />} />
+        <Route path="/saved-jobs" element={<SavedJobs />} />
+        <Route path="/profile" element={<UserProfile />} />
+
+        <Route element={<ProtectedRoute requiredRole="employer" />}>
+          <Route path="/employer-dashboard" element={<EmployerDashboard />} />
+          <Route path="/post-job" element={<JobPostingForm />} />
+          <Route path="/manage-jobs" element={<ManageJobs />} />
+          <Route path="/applicants" element={<ApplicationViewer />} />
+          <Route path="/company-profile" element={<EmployerProfilePage />} />
+        </Route>
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+
+      <Toaster
+        toastOptions={{
+          className: "",
+          style: {
+            fontSize: "13px",
+          },
+        }}
+      />
+    </div>
+  );
 }
 
-export default App
+export default App;

@@ -66,3 +66,17 @@ export const CATEGORIES = [
     {value: "Human Resources", label: "Human Resources"},
     {value: "Other", label: "Other"}
 ]
+
+export const JOB_TYPES = [
+    {value: "Remote", label: "Remote"},
+    {value: "Full-Time", label: "Full-Time"},
+    {value: "Part-Time", label: "Part-Time"},
+    {value: "Contract", label: "Contract"},
+    {value: "Internship", label: "Internship"}
+]
+
+export const SALARY_RANGES = [
+    "Less than $1000",
+    "$1000 - $15,000",
+    "More than $15,000"
+]

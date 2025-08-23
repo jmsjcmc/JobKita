@@ -16,18 +16,6 @@ export default function Login() {
     success: false,
   });
 
-  const validateEmail = (email) => {
-    if (!email.trim()) return 'Email required';
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) return 'Please enter valid email address'
-    return '';
-  };
-
-  const validatePassword = (password) => {
-    if (!password) return 'Password required'
-    return '';
-  };
-
   const handleInputChange = (e) => {
     const {name, value} = e.target;
     setFormData(prev => ({
@@ -88,7 +76,7 @@ export default function Login() {
         className="bg-white p-8 rounded-xl shadow-lg max-w-md w-full text-center">
           <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4"/>
           <h2 className="text-2xl font-bold text-gray-900 mb-2">Welcome Back!</h2>
-          <p className="text-gray-600 mb-4">Yoou have been successfully logged in.</p>
+          <p className="text-gray-600 mb-4">You have been successfully logged in.</p>
           <div className="animate-spin w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full mx-auto"/>
           <p className="text-sm text-gray-500 mt-2">Redirecting to your dashboard...</p>
         </motion.div>

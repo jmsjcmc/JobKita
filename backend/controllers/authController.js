@@ -23,7 +23,6 @@ exports.register = async (req, res) => {
             companyDescription: user.companyDescription || '',
             companyLogo: user.companyLogo || '',
             resume: user.resume || ''
-
         })
     } catch (error) {
         res.status(500).json({message: error.message});
@@ -31,7 +30,28 @@ exports.register = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
+    try {
+        const {email, password} = req.body;
+        const user = await User.findOne({email});
+        if (!user || !(await user.matchPassword(password))){
+            return res.status(401).json({message: 'Invalid email or password'});
+        }
 
+        res.json({
+             _id: user._id,
+            name: user.name,
+            email: user.email,
+            avatar: user.avatar,
+            role: user.role,
+            token: generateToken(user._id),
+            companyName: user.companyName || '',
+            companyDescription: user.companyDescription || '',
+            companyLogo: user.companyLogo || '',
+            resume: user.resume || ''
+        })
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
 };
 
 exports.getMe = async (req, res) => {

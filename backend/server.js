@@ -4,6 +4,9 @@ const cors = require('cors')
 const path = require('path');
 const connectDB = require('./config/db')
 const authRoutes = require('./routes/authRouter')
+const analyticsRoutes = require('./routes/analyticsRouter')
+const applicationRoutes = require('./routes/applicationRouter')
+const savedJobRoutes = require('./routes/savedJobRouter')
 const userRoutes = require('./routes/userRouter')
 const jobsRoutes = require('./routes/jobRouter')
 const app = express();
@@ -20,9 +23,13 @@ connectDB();
 
 app.use(express.json());
 
+// Routes
 app.use('/api/auth', authRoutes);
-app.use('/api/user', userRoutes);
+app.use('/api/analytics', analyticsRoutes);
+app.use('/api/applications', applicationRoutes);
 app.use('/api/jobs', jobsRoutes);
+app.use('/api/user', userRoutes);
+app.use('/api/savedJobs', savedJobRoutes);
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'), {}))
 

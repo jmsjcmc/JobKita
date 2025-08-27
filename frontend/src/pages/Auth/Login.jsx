@@ -1,8 +1,20 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { AlertCircle, CheckCircle, Eye, EyeOff, Loader, Lock, Mail } from "lucide-react";
+import {
+  AlertCircle,
+  CheckCircle,
+  Eye,
+  EyeOff,
+  Loader,
+  Lock,
+  Mail,
+} from "lucide-react";
+import axiosInstance from "../../utils/axiosInstance";
+import { API_PATHS } from "../../utils/apiPaths";
+import { useAuth } from "../../context/AuthContext";
 
 export default function Login() {
+  const {login} = useAuth()
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -17,53 +29,87 @@ export default function Login() {
   });
 
   const handleInputChange = (e) => {
-    const {name, value} = e.target;
-    setFormData(prev => ({
+    const { name, value } = e.target;
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
-    }))
+      [name]: value,
+    }));
 
     if (formState.errors[name]) {
-      setFormState(prev => ({
+      setFormState((prev) => ({
         ...prev,
-        errors: {...prev.errors, [name]: ''}
-      }))
+        errors: { ...prev.errors, [name]: "" },
+      }));
     }
   };
 
   const validateForm = () => {
     const errors = {
       email: validateEmail(formData.email),
-      password: validatePassword(formData.password)
-    }
+      password: validatePassword(formData.password),
+    };
 
-    Object.keys(errors).forEach(key => {
+    Object.keys(errors).forEach((key) => {
       if (!errors[key]) delete errors[key];
-    })
+    });
 
-    setFormState(prev => ({
-      ...prev, errors
-    }))
+    setFormState((prev) => ({
+      ...prev,
+      errors,
+    }));
     return Object.keys(errors).length === 0;
   };
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (!validateForm()) return;
 
-    setFormState(prev => ({ ...prev, loading: true}))
+    setFormState((prev) => ({ ...prev, loading: true }));
 
     try {
-      
+      const response = await axiosInstance.post(API_PATHS.AUTH.LOGIN, {
+        email: formData.email,
+        password: formData.password,
+        rememberMe: formData.rememberMe,
+      });
+
+      setFormState((prev) => ({
+        ...prev,
+        loading: false,
+        success: true,
+        errors: {},
+      }));
+       
+      const {token, role} = response.data;
+
+      if (token) {
+        login(response.data, token);
+
+        setTimeout(() => {
+          window.location.href = 
+          role === 'employer'
+          ? '/employer-dashboard'
+          : '/find-jobs';
+        }, 2000);
+      }
+
+      setTimeout(() => {
+        const redirectPath = user.role === 'employer'
+        ? '/employer-dashboard'
+        : '/find-jobs';
+        window.location.href = redirectPath;
+      }, 1500);
     } catch (error) {
-      setFormState(prev => ({
+      setFormState((prev) => ({
         ...prev,
         loading: false,
         errors: {
-          submit: error.response?.data?.message || 'Login failer. Please check your credentials'
-        }
-      }))
+          submit:
+            error.response?.data?.message ||
+            "Login failer. Please check your credentials",
+        },
+      }));
     }
   };
 
@@ -71,17 +117,24 @@ export default function Login() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
         <motion.div
-        initial={{opacity: 0, scale: 0.9}}
-        animate={{opacity: 1, scale: 1}}
-        className="bg-white p-8 rounded-xl shadow-lg max-w-md w-full text-center">
-          <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4"/>
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">Welcome Back!</h2>
-          <p className="text-gray-600 mb-4">You have been successfully logged in.</p>
-          <div className="animate-spin w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full mx-auto"/>
-          <p className="text-sm text-gray-500 mt-2">Redirecting to your dashboard...</p>
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          className="bg-white p-8 rounded-xl shadow-lg max-w-md w-full text-center"
+        >
+          <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            Welcome Back!
+          </h2>
+          <p className="text-gray-600 mb-4">
+            You have been successfully logged in.
+          </p>
+          <div className="animate-spin w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full mx-auto" />
+          <p className="text-sm text-gray-500 mt-2">
+            Redirecting to your dashboard...
+          </p>
         </motion.div>
       </div>
-    )
+    );
   }
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
@@ -173,18 +226,21 @@ export default function Login() {
           {formState.errors.submit && (
             <div className="bg-red-50 border border-red-200 rounded-lg p-3">
               <p className="text-red-700 text-sm flex items-center">
-                <AlertCircle className="w-4 h-4 mr-2"/>
+                <AlertCircle className="w-4 h-4 mr-2" />
                 {formState.errors.submit}
               </p>
             </div>
           )}
 
           {/* Submit Button */}
-          <button type="submit" disabled={formState.loading}
-          className="w-full bg-gradient-to-r from-blue-200 to-blue-500 text-white py-3 rounded-lg font-semibold hover:from-blue-500 hover:to-blue-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2">
+          <button
+            type="submit"
+            disabled={formState.loading}
+            className="w-full bg-gradient-to-r from-blue-200 to-blue-500 text-white py-3 rounded-lg font-semibold hover:from-blue-500 hover:to-blue-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2"
+          >
             {formState.loading ? (
               <>
-                <Loader className="w-5 h-5 animate-spin"/>
+                <Loader className="w-5 h-5 animate-spin" />
                 <span>Signing In...</span>
               </>
             ) : (
@@ -195,9 +251,13 @@ export default function Login() {
           {/* Sign Up Link */}
           <div className="text-center">
             <p className="text-gray-600">
-              Don't have an account? {' '}
-              <a className="text-blue-600 hover:text-blue-700 font-medium" href="/sign-up">
-              Create one here</a>
+              Don't have an account?{" "}
+              <a
+                className="text-blue-600 hover:text-blue-700 font-medium"
+                href="/sign-up"
+              >
+                Create one here
+              </a>
             </p>
           </div>
         </form>

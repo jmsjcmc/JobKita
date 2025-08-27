@@ -14,10 +14,11 @@ import EmployerProfilePage from "./pages/Employer/EmployerProfilePage";
 import SavedJobs from "./pages/JobSeeker/SavedJObs";
 import UserProfile from "./pages/JobSeeker/UserProfile";
 import ManageJobs from "./pages/Employer/ManageJobs";
+import { AuthProvider } from "./context/AuthContext";
 
 function App() {
   return (
-    <div>
+    <AuthProvider>
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/sign-in" element={<Login />} />
@@ -46,7 +47,7 @@ function App() {
           },
         }}
       />
-    </div>
+    </AuthProvider>
   );
 }
 

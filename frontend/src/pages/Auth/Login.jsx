@@ -12,9 +12,10 @@ import {
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import { useAuth } from "../../context/AuthContext";
+import { validateEmail, validatePassword } from "../../utils/helper";
 
 export default function Login() {
-  const {login} = useAuth()
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -80,24 +81,21 @@ export default function Login() {
         success: true,
         errors: {},
       }));
-       
-      const {token, role} = response.data;
+
+      const { token, role } = response.data;
 
       if (token) {
         login(response.data, token);
 
         setTimeout(() => {
-          window.location.href = 
-          role === 'employer'
-          ? '/employer-dashboard'
-          : '/find-jobs';
+          window.location.href =
+            role === "employer" ? "/employer-dashboard" : "/find-jobs";
         }, 2000);
       }
 
       setTimeout(() => {
-        const redirectPath = user.role === 'employer'
-        ? '/employer-dashboard'
-        : '/find-jobs';
+        const redirectPath =
+          user.role === "employer" ? "/employer-dashboard" : "/find-jobs";
         window.location.href = redirectPath;
       }, 1500);
     } catch (error) {

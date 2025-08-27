@@ -1,11 +1,11 @@
 import { Briefcase } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { motion } from 'framer-motion';
+import { useAuth } from "../../../context/AuthContext";
 
 
 export default function Header() {
-    const isAuthenticated = true;
-    const user = {fullName: "Alex", role: "employer"}
+    const {user, isAuthenticated} = useAuth()
     const navigate = useNavigate()
   return (
     <motion.header

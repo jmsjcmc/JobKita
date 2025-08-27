@@ -23,13 +23,14 @@ axiosInstance.interceptors.request.use(
     }
 );
 
-axiosInstance.interceptors.request.use(
-    (response) => {
-        return response;
-    }, 
+axiosInstance.interceptors.response.use(
+    (response) =>  response
+    , 
     (error) => {
         if (error.response) {
             if (error.response.status === 401){
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
                 window.location.href = '/';
             } else if (error.response.status === 500){
                 console.error('Server error. Please try again later.');

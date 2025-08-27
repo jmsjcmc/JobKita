@@ -2,7 +2,7 @@ const Job = require('../models/Job');
 const Application = require('../models/Application');
 
 const getTrend = (current, previous) => {
-    if (previos === 0) return current > 0 ? 100 : 0;
+    if (previous === 0) return current > 0 ? 100 : 0;
     return Math.round(((current - previous) / previous) * 100);
 };
 

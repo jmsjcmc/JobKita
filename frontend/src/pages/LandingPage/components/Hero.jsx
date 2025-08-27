@@ -1,10 +1,10 @@
 import { ArrowRight, Building2, Search, TrendingUp, User } from "lucide-react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../../context/AuthContext";
 
 export default function Hero() {
-  const isAuthenticated = true;
-  const user = { fullName: "Alex", role: "employer" };
+  const {user, isAuthenticated} = useAuth();
   const navigate = useNavigate();
   const stats = [
     { icon: User, label: "Active Users", value: "2.4M+" },

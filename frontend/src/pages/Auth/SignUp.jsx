@@ -12,9 +12,18 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { validateAvatar, validateEmail, validatePassword } from "../../utils/helper";
+import {
+  validateAvatar,
+  validateEmail,
+  validatePassword,
+} from "../../utils/helper";
+import uploadImage from "../../utils/uploadImage";
+import axiosInstance from "../../utils/axiosInstance";
+import { API_PATHS } from "../../utils/apiPaths";
+import { useAuth } from "../../context/AuthContext";
 
 export default function SignUp() {
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -43,7 +52,7 @@ export default function SignUp() {
         ...prev,
         errors: {
           ...prev.errors,
-          [name]: "",
+          [name]: ""
         },
       }));
     }
@@ -102,7 +111,7 @@ export default function SignUp() {
       email: validateEmail(formData.email),
       password: validatePassword(formData.password),
       role: !formData.role ? "Please select role" : "",
-      avatar: ""
+      avatar: "",
     };
 
     Object.keys(errors).forEach((key) => {
@@ -110,7 +119,8 @@ export default function SignUp() {
     });
 
     setFormState((prev) => ({
-      ...prev, errors
+      ...prev,
+      errors,
     }));
     return Object.keys(errors).length === 0;
   };
@@ -121,10 +131,42 @@ export default function SignUp() {
     if (!validateForm()) return;
 
     setFormState((prev) => ({
-      ...prev, loading: true
+      ...prev,
+      loading: true,
     }));
     try {
-      
+      let avatarUrl = "";
+
+      if (formData.avatar) {
+        const imgUploadRes = await uploadImage(formData.avatar);
+        avatarUrl = imgUploadRes.imageUrl || "";
+      }
+
+      const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER, {
+        name: formData.fullName,
+        email: formData.email,
+        password: formData.password,
+        role: formData.role,
+        avatar: avatarUrl || "",
+      });
+
+      setFormState((prev) => ({
+        ...prev,
+        loading: false,
+        success: true,
+        errors: {},
+      }));
+
+      const { token } = response.data;
+
+      if (token) {
+        login(response.data, token);
+
+        setTimeout(() => {
+          window.location.href =
+            formData.role === "employer" ? "/employer-dashboard" : "/find-jobs";
+        }, 2000);
+      }
     } catch (error) {
       console.log("error", error);
 
@@ -133,10 +175,10 @@ export default function SignUp() {
         loading: false,
         errors: {
           submit:
-          error.response?.data?.message ||
-          "Registration failed. Please try again."
-        }
-      }))
+            error.response?.data?.message ||
+            "Registration failed. Please try again.",
+        },
+      }));
     }
   };
 
@@ -244,7 +286,10 @@ export default function SignUp() {
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
-                type="password"
+                type={formState.showPassword
+                  ? 'text'
+                  : 'password'
+                }
                 name="password"
                 value={formData.password}
                 onChange={handleInputChange}

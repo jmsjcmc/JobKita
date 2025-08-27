@@ -3,26 +3,30 @@ import { useAuth } from "../../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
-import { Briefcase, Building2, LogOut } from "lucide-react";
+import { Briefcase, Building2, LogOut, Menu, X } from "lucide-react";
 import { NAVIGATION_MENU } from "../../utils/data";
+import ProfileDropdown from "./ProfileDropdown";
 
-export default function DashboardLayout({ activeMenu }) {
+export default function DashboardLayout({ activeMenu, children }) {
   const NavigationItem = ({ item, isActive, onClick, isCollapsed }) => {
-    const Icon = item.icon
-    return <button
-    onClick={() => onClick(item.id)}
-    className={`w-full flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-all duration-200 group ${
-        isActive
-        ? 'bg-blue-50 text-blue-700 shadow-sm shadow-blue-50'
-        : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-    }`}>
-        <Icon className={`h-5 w-5 flex-shrink-0 ${
-            isActive 
-            ? 'text-blue-600'
-            : 'text-gray-500'
-        }`}/>
+    const Icon = item.icon;
+    return (
+      <button
+        onClick={() => onClick(item.id)}
+        className={`w-full flex items-center px-3 py-2.5 text-sm font-medium rounded-lg transition-all duration-200 group ${
+          isActive
+            ? "bg-blue-50 text-blue-700 shadow-sm shadow-blue-50"
+            : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+        }`}
+      >
+        <Icon
+          className={`h-5 w-5 flex-shrink-0 ${
+            isActive ? "text-blue-600" : "text-gray-500"
+          }`}
+        />
         {!isCollapsed && <span className="ml-3 truncate">{item.name}</span>}
-    </button>
+      </button>
+    );
   };
   const { user, logout } = useAuth();
   const navigate = useNavigate();
@@ -106,12 +110,12 @@ export default function DashboardLayout({ activeMenu }) {
         {/* Navigation */}
         <nav className="p-4 space-y-2">
           {NAVIGATION_MENU.map((item) => (
-            <NavigationItem 
-            key={item.id}
-            item={item}
-            isActive={activeNavItem === item.id}
-            onClick={handleNavigation}
-            isCollapsed={sidebarCollapsed}
+            <NavigationItem
+              key={item.id}
+              item={item}
+              isActive={activeNavItem === item.id}
+              onClick={handleNavigation}
+              isCollapsed={sidebarCollapsed}
             />
           ))}
         </nav>
@@ -125,6 +129,48 @@ export default function DashboardLayout({ activeMenu }) {
             {!sidebarCollapsed && <span className="ml-3">Logout</span>}
           </button>
         </div>
+      </div>
+      {/* Mobile overlay */}
+      {isMobile && sidebarOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-25 z-40 backdrop-blur-sm" onClick={() => setSidebarOpen(false)}></div>
+      )}
+      {/* Main content */}
+      <div
+        className={`flex-1 flex flex-col transition-all duration-300 ${
+          isMobile ? "ml-0" : sidebarCollapsed ? "ml-16" : "ml-64"
+        }`}
+      >
+        {/* Top Header */}
+        <header className="bg-white/80 backdrop-blur-sm border-b border-gray-200 h-16 flex items-center justify-between px-6 sticky top-0 z-30">
+          <div className="flex items-center space-x-4">
+            {isMobile && (
+              <button className="p-2 rounded-xl hover:bg-gray-100 transition-colors duration-200" onClick={toggleSidebar}>
+                {sidebarOpen ? <X className="h-5 w-5 text-gray-600"/> : <Menu className="h-5 w-5 text-gray-600"/>}
+              </button>
+            )}
+            <div>
+              <h1 className="text-base font-semibold text-gray-900">Welcome Back!</h1>
+              <p className="text-sm text-gray-500 hidden sm:block">Here's what's happening with your jobs today.</p>
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-3">
+            {/* Profile dropdown */}
+            <ProfileDropdown 
+            isOpen={profileDropdownOpen}
+            onToggle={(e) => {
+              e.stopPropagation();
+              setProfileDropdownOpen(!profileDropdownOpen);
+            }}
+            avatar={user?.avatar || ''}
+            companyName={user?.name || ''}
+            email={user?.email || ''}
+            onLogout={logout}/>
+          </div>
+        </header>
+
+        {/* Main content area */}
+        <main className="flex-1 overflow-auto p-6">{children}</main>
       </div>
     </div>
   );

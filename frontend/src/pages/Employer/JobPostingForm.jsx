@@ -1,7 +1,8 @@
+import DashboardLayout from "../../components/layout/DashboardLayout";
 
 
 export default function JobPostingForm() {
   return (
-    <div>JobPostingForm</div>
+    <DashboardLayout activeMenu={'post-job'}>JobPostingForm</DashboardLayout>
   )
 }

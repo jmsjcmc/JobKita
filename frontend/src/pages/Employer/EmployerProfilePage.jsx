@@ -1,7 +1,8 @@
 import React from 'react'
+import DashboardLayout from '../../components/layout/DashboardLayout'
 
 export default function EmployerProfilePage() {
   return (
-    <div>EmployerProfilePage</div>
+    <DashboardLayout>EmployerProfilePage</DashboardLayout>
   )
 }

@@ -1,7 +1,8 @@
+import DashboardLayout from "../../components/layout/DashboardLayout";
 
 
 export default function ManageJobs() {
   return (
-    <div>ManageJobs</div>
+    <DashboardLayout>ManageJobs</DashboardLayout>
   )
 }

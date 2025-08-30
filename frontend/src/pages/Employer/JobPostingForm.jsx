@@ -1,7 +1,7 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import { useState } from "react";
-import { Briefcase, Eye } from "lucide-react";
+import { Briefcase, Eye, MapPin } from "lucide-react";
 import InputField from "../../components/input/InputField";
 
 export default function JobPostingForm() {
@@ -82,6 +82,22 @@ export default function JobPostingForm() {
               error={errors.jobTitle}
               required
               icon={Briefcase}/>
+
+              {/* Location & Remote */}
+              <div>
+                <div>
+                  <div>
+                    <InputField 
+                    label={'Location'}
+                    id={'locaiton'}
+                    placeholder={'e.g., New York, YY'}
+                    value={formData.location}
+                    onChange={(e) => handleInputChange('location', e.target.validationErrors)}
+                    error={errors.location}
+                    icon={MapPin}/>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

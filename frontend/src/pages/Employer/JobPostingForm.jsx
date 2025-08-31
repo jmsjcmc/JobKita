@@ -98,6 +98,8 @@ export default function JobPostingForm() {
                   </div>
                 </div>
               </div>
+
+              <div></div>
             </div>
           </div>
         </div>

@@ -1,8 +1,10 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import { useState } from "react";
-import { Briefcase, Eye, MapPin } from "lucide-react";
+import { Briefcase, Eye, MapPin, Users } from "lucide-react";
 import InputField from "../../components/input/InputField";
+import SelectField from "../../components/input/SelectField";
+import { CATEGORIES, JOB_TYPES } from "../../utils/data";
 
 export default function JobPostingForm() {
   const navigate = useNavigate();
@@ -84,9 +86,9 @@ export default function JobPostingForm() {
               icon={Briefcase}/>
 
               {/* Location & Remote */}
-              <div>
-                <div>
-                  <div>
+              <div className="space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-end sm:space-x-4 space-y-4 sm:space-y-0">
+                  <div className="flex-1">
                     <InputField 
                     label={'Location'}
                     id={'locaiton'}
@@ -99,7 +101,30 @@ export default function JobPostingForm() {
                 </div>
               </div>
 
-              <div></div>
+              {/* Category & Job Type */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <SelectField 
+                label='Category'
+                id='category'
+                value={formData.category}
+                onChange={(e) => handleInputChange('category', e.target.value)}
+                options={CATEGORIES}
+                placeholder='Select a category'
+                error={errors.category}
+                required
+                icon={Users}/>
+
+                <SelectField 
+                label='Job Type'
+                id='jobType'
+                value={formData.jobType}
+                onChange={(e) => handleInputChange('jobType', e.target.value)}
+                options={JOB_TYPES}
+                placeholder='Select job type'
+                error={errors.jobType}
+                required
+                icon={Briefcase}/>
+              </div>
             </div>
           </div>
         </div>

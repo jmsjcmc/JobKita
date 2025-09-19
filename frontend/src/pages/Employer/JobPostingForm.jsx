@@ -17,6 +17,7 @@ import TextareaField from "../../components/input/TextareaField";
 import axiosInstance from "./../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import JobPostingPreview from "../../components/cards/JobPostingPreview";
+import toast from "react-hot-toast";
 
 export default function JobPostingForm() {
   const navigate = useNavigate();
@@ -32,6 +33,8 @@ export default function JobPostingForm() {
     requirements: "",
     salaryMin: "",
     salaryMax: "",
+    isRemote: false,
+    currency: ""
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -142,8 +145,8 @@ export default function JobPostingForm() {
 
   if (isPreview) {
     return (
-      <DashboardLayout activeMenu={post-job}>
-        <JobPostingPreview formData={formData} setIsPreview={setIsPreview}/>
+      <DashboardLayout activeMenu="post-job">
+        <JobPostingPreview formData={formData} setIsPreview={setIsPreview} />
       </DashboardLayout>
     );
   }
@@ -191,11 +194,11 @@ export default function JobPostingForm() {
                   <div className="flex-1">
                     <InputField
                       label={"Location"}
-                      id={"locaiton"}
+                      id={"location"}
                       placeholder={"e.g., New York, YY"}
                       value={formData.location}
                       onChange={(e) =>
-                        handleInputChange("location", e.target.validationErrors)
+                        handleInputChange("location", e.target.value)
                       }
                       error={errors.location}
                       icon={MapPin}

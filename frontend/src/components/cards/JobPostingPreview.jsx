@@ -1,4 +1,3 @@
-import React from "react";
 import { useAuth } from "../../context/AuthContext";
 import {
   ArrowLeft,
@@ -35,10 +34,10 @@ export default function JobPostingPreview({ formData, setIsPreview }) {
           {/* Main content card */}
           <div>
             {/* Hero section with clean background */}
-            <div className="">
-              <div className="relative bg-white px-0 pb-8 mt-8 border-b border-gray-100">
-                <div className="relative z-10">
-                  <div className="flex items-start justify-between mb-0">
+            <div className="relative bg-white px-0 pb-8 mt-8 border-b border-gray-100">
+              <div className="relative z-10">
+                <div className="flex items-start justify-between mb-0">
+                  <div>
                     <h1 className="text-lg lg:text-xl font-semibold mb-2 leading-tight text-gray-900">
                       {formData.jobTitle}
                     </h1>
@@ -69,75 +68,90 @@ export default function JobPostingPreview({ formData, setIsPreview }) {
                     </div>
                   )}
                 </div>
-                {/* Tags */}
-                <div className="flex flex-wrap gap-3 mt-6 md:mt-0">
-                  <span className="px-4 py-2 bg-blue-50 text-sm text-blue-700 font-semibold rounded-full border border-blue-200">
-                    {
-                      CATEGORIES.find((c) => c.value === formData.category)
-                        ?.label
-                    }
-                  </span>
-                  <span className="px-4 py-2 text-sm bg-purple-50 text-purple-700 font-semibold rounded-full border border-purple-200">
-                    {JOB_TYPES.find((j) => j.value === formData.jobType)?.label}
-                  </span>
-                  <div
-                    className="flex items-center space-x-1 px-4 py-2 bg-gray-50 text-sm text-gray-700 font-semibold rounded-full border border-gray-200
+              </div>
+              {/* Tags */}
+              <div className="flex flex-wrap gap-3 mt-6 md:mt-0">
+                <span className="px-4 py-2 bg-blue-50 text-sm text-blue-700 font-semibold rounded-full border border-blue-200">
+                  {CATEGORIES.find((c) => c.value === formData.category)?.label}
+                </span>
+                <span className="px-4 py-2 text-sm bg-purple-50 text-purple-700 font-semibold rounded-full border border-purple-200">
+                  {JOB_TYPES.find((j) => j.value === formData.jobType)?.label}
+                </span>
+                <div
+                  className="flex items-center space-x-1 px-4 py-2 bg-gray-50 text-sm text-gray-700 font-semibold rounded-full border border-gray-200
                   "
-                  >
-                    <Clock className="h-4 w-4" />
-                    <span>Posted today</span>
+                >
+                  <Clock className="h-4 w-4" />
+                  <span>Posted today</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* Content sections */}
+          <div className="px-0 pb-8 space-y-8">
+            {/* Salary section */}
+            <div className="relative overflow-hidden bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-100 p-6 rounded-2xl">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-emerald-400/10 to-teal-400/10 rounded-full -translate-y-16 translate-x-16"></div>
+              <div className="relative z-10">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center space-x-3">
+                    <div className="p-3 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-xl">
+                      <DollarSign className="h-4 md:h-6 w-4 md:w-6 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="text-sm font-semibold text-gray-900 mb-1">
+                        Compensation
+                      </h3>
+                      <div className="text-sm md:text-lg font-bold text-gray-900">
+                        {
+                          currencies.find((c) => c.value === formData.currency)
+                            ?.label
+                        }
+                        {formData.salaryMin.toLocaleString()} -{" "}
+                        {
+                          currencies.find((c) => c.value === formData.currency)
+                            ?.label
+                        }
+                        {formData.salaryMax.toLocaleString()}
+                        <span className="text-sm md:text-lg text-gray-600 font-normal ml-1">
+                          per year
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="hidden md:flex items-center space-x-2 text-sm text-emerald-700 bg-emerald-100 px-3 py- rounded-full">
+                    <Users className="h-4 w-4" />
+                    <span>Competitive</span>
                   </div>
                 </div>
               </div>
             </div>
-            {/* Content sections */}
-            <div className="px-0 pb-8 space-y-8">
-              {/* Salary section */}
-              <div className="relative overflow-hidden bg-gradient-to-r from-emerald-50 to-teal-50 border border-emerald-100 p-6 rounded-2xl">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-emerald-400/10 to-teal-400/10 rounded-full -translate-y-16 translate-x-16"></div>
-                <div className="relative z-10">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-3">
-                      <div className="p-3 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-xl">
-                        <DollarSign className="h-4 md:h-6 w-4 md:w-6 text-white" />
-                      </div>
-                      <div>
-                        <h3 className="text-sm font-semibold text-gray-900 mb-1">
-                          Compensation
-                        </h3>
-                        <div className="text-sm md:text-lg font-bold text-gray-900">
-                          {
-                            currencies.find(
-                              (c) => c.value === formData.currency
-                            )?.label
-                          }
-                          {formData.salaryMin.toLocaleString()} -{" "}
-                          {
-                            currencies.find(
-                              (c) => c.value === formData.currency
-                            )?.label
-                          }
-                          {formData.salaryMax.toLocaleString()}
-                          <span className="text-sm md:text-lg text-gray-600 font-normal ml-1">
-                            per year
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="hidden md:flex items-center space-x-2 text-sm text-emerald-700 bg-emerald-100 px-3 py- rounded-full">
-                      <Users className="h-4 w-4" />
-                      <span>Competitive</span>
-                    </div>
-                  </div>
+
+            {/* Job Description */}
+            <div className="space-y-4">
+              <h3 className="text-2xl font-bold text-gray-900 flex items-cente space-x-3">
+                <div className="w-1 h-8 bg-gradient-to-b from-blue-500 to-purple-600 rounded-full"></div>
+                <span className="text-base md:text-lg">About This Role</span>
+              </h3>
+              <div className="bg-gray-50 border border-gray-100 rounded-xl p-6">
+                <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
+                  {formData.description}
                 </div>
               </div>
+            </div>
 
-              {/* Job Description */}
-              <div className="space-y-4">
-                <h3 className="text-2xl font-bold text-gray-900 flex items-cente space-x-3">
-                    <div className="w-1 h-8 bg-gradient-to-b from-blue-500 to-purple-600 rounded-full"></div>
-                    <span className="text-base md:text-lg">About This Role</span>
-                </h3>
+            {/* Requirements */}
+            <div className="space-y-4">
+              <h3 className="text-2xl font-bold text-gray-900 flex items-center space-x-3">
+                <div className="w-1 h-8 bg-gradient-to-b from-pink-500 to-pink-600 rounded-full"></div>
+                <span className="text-base md:text-lg">
+                  What We're Looking For
+                </span>
+              </h3>
+              <div className="bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-100 rounded-xl p-6">
+                <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
+                  {formData.requirements}
+                </div>
               </div>
             </div>
           </div>

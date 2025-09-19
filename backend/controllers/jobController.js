@@ -25,7 +25,7 @@ exports.getJobs = async (req, res) => {
   const query = {
     isClosed: false,
     ...(keyword && { title: { $regex: keyword, $options: "i" } }),
-    ...(keyword && { title: { $regex: location, $options: "i" } }),
+    ...(location && { title: { $regex: location, $options: "i" } }),
     ...(category && { category }),
     ...(type && { type }),
   };
@@ -87,7 +87,7 @@ exports.getJobsEmployer = async (req, res) => {
         return res.status(403).json({message: 'Access denied'});
     }
     // Get all jobs posted by employer
-    const job = await Job.find({company: userId})
+    const jobs = await Job.find({company: userId})
     .populate('company', 'name companyName companyLogo')
     .lean(); 
 
@@ -124,7 +124,7 @@ exports.getJobById = async (req, res) => {
 
     if (userId){
         const application = await Application.findOne({
-            job: _id,
+            job: job._id,
             applicant: userId,
         }).select('status');
 
@@ -191,7 +191,7 @@ exports.toggleCloseJob = async (req, res) => {
     job.isClosed = !job.isClosed;
     await job.save();
 
-    res.json({message: 'Job marked as closed'});
+    res.json({message: job.isClosed ? 'Job marked as closed' : 'Job reopened'});
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

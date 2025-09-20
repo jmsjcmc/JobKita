@@ -251,14 +251,14 @@ export default function ManageJobs() {
                         ? Array.from({ length: 5 }).map((_, index) => (
                             <LoadingRow key={index} />
                           ))
-                        : paginatedJobs.map((job) => <tr key={job.id} className="">
-                          <td className="">
+                        : paginatedJobs.map((job) => <tr key={job.id} className="hover:bg-blue-50/30 transition-all duration-200 border-b border-gray-100/60">
+                          <td className="px-6 py-5 whitespace-nowrap minx-w-[200px] sm:min-w-0">
                             <div>
-                              <div className="">{job.title}</div>
-                              <div className="">{job.company}</div>
+                              <div className="text-sm font-semibold text-gray-900">{job.title}</div>
+                              <div className="text-xs text-gray-500 font-medium">{job.company}</div>
                             </div>
                           </td>
-                          <td className="">
+                          <td className="px-6 py-5 whitespace-nowrap min-w-[120px] sm:min-w-0">
                             <span className={`inline-flex px-3 py-1.5 text-xs font-semibold rounded-full ${
                               job.status === "Active"
                               ? 'bg-emerald-100 text-emerald-800 border border-emerald-200'

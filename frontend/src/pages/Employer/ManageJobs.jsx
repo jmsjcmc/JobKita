@@ -4,8 +4,8 @@ import { useEffect, useMemo, useState } from "react";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import moment from "moment";
-import { ChevronDown, ChevronUp, Plus, Search } from "lucide-react";
-import  toast  from 'react-hot-toast';
+import { ChevronDown, ChevronUp, Plus, Search, Users } from "lucide-react";
+import toast from "react-hot-toast";
 
 export default function ManageJobs() {
   const navigate = useNavigate();
@@ -19,10 +19,11 @@ export default function ManageJobs() {
   const [jobs, setJobs] = useState([]);
   const filteredAndSortedJobs = useMemo(() => {
     let filtered = jobs.filter((job) => {
-      const matchesSearch = 
-      job.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-      job.company.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesStatus = statusFilter === 'All' || job.status === statusFilter;
+      const matchesSearch =
+        job.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        job.company.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesStatus =
+        statusFilter === "All" || job.status === statusFilter;
       return matchesSearch && matchesStatus;
     });
 
@@ -30,12 +31,12 @@ export default function ManageJobs() {
       let aValue = a[sortField];
       let bValue = b[sortField];
 
-      if (sortField === 'applicants'){
+      if (sortField === "applicants") {
         aValue = Number(aValue);
         bValue = Number(bValue);
       }
 
-      if (sortDirection === 'asc'){
+      if (sortDirection === "asc") {
         return aValue > bValue ? 1 : -1;
       } else {
         return aValue < bValue ? 1 : -1;
@@ -50,36 +51,40 @@ export default function ManageJobs() {
     startIndex + itemsPerPage
   );
   const handleSort = (field) => {
-    if (sortField === field){
-      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    if (sortField === field) {
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
     } else {
       setSortField(field);
-      setSortDirection('asc');
+      setSortDirection("asc");
     }
   };
   const handleStatusChange = async (jobId) => {
-    try{
+    try {
       const response = await axiosInstance.put(
         API_PATHS.JOBS.TOGGLE_CLOSE(jobId)
       );
       getPostedJobs(true);
-    } catch(error){
-      console.error('Error toggling job status:', error);
+    } catch (error) {
+      console.error("Error toggling job status:", error);
     }
   };
   const handleDeleteJob = async (jobId) => {
-    try{
+    try {
       await axiosInstance.delete(API_PATHS.JOBS.DELETE_JOB(jobId));
       setJobs(jobs.filter((job) => job.id !== jobId));
-      toast.success("Job listing delted successfully")
-    } catch (error){
-      console.error('Error deleting job:', error);
+      toast.success("Job listing delted successfully");
+    } catch (error) {
+      console.error("Error deleting job:", error);
     }
   };
   const SortIcon = ({ field }) => {
     if (sortField !== field)
-      return <ChevronUp className="w-4 h-4 text-gray-400"/>;
-    return sortDirection === 'asc' ? (<ChevronUp className="w-4 h-4 text-blue-600"/>) : (<ChevronDown className="w-4 h-4 text-blue-600"/>)
+      return <ChevronUp className="w-4 h-4 text-gray-400" />;
+    return sortDirection === "asc" ? (
+      <ChevronUp className="w-4 h-4 text-blue-600" />
+    ) : (
+      <ChevronDown className="w-4 h-4 text-blue-600" />
+    );
   };
   const LoadingRow = () => (
     <tr className="animate-pulse">
@@ -228,7 +233,10 @@ export default function ManageJobs() {
                             <SortIcon field="title" />
                           </div>
                         </th>
-                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100/60 transition-all duration-200 min-w-[120px] sm:min-w-0" onClick={() => handleSort("status")}>
+                        <th
+                          className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100/60 transition-all duration-200 min-w-[120px] sm:min-w-0"
+                          onClick={() => handleSort("status")}
+                        >
                           <div className="flex items-center space-x-1">
                             <span>Status</span>
                             <SortIcon field="status" />
@@ -243,7 +251,9 @@ export default function ManageJobs() {
                             <SortIcon field="applicants" />
                           </div>
                         </th>
-                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100/60 transition-all duration-200 min-w-[180px] sm:min-w-0">Actions</th>
+                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-100/60 transition-all duration-200 min-w-[180px] sm:min-w-0">
+                          Actions
+                        </th>
                       </tr>
                     </thead>
                     <tbody className="bg-white divide-y divide-gray-200">
@@ -251,21 +261,47 @@ export default function ManageJobs() {
                         ? Array.from({ length: 5 }).map((_, index) => (
                             <LoadingRow key={index} />
                           ))
-                        : paginatedJobs.map((job) => <tr key={job.id} className="hover:bg-blue-50/30 transition-all duration-200 border-b border-gray-100/60">
-                          <td className="px-6 py-5 whitespace-nowrap minx-w-[200px] sm:min-w-0">
-                            <div>
-                              <div className="text-sm font-semibold text-gray-900">{job.title}</div>
-                              <div className="text-xs text-gray-500 font-medium">{job.company}</div>
-                            </div>
-                          </td>
-                          <td className="px-6 py-5 whitespace-nowrap min-w-[120px] sm:min-w-0">
-                            <span className={`inline-flex px-3 py-1.5 text-xs font-semibold rounded-full ${
-                              job.status === "Active"
-                              ? 'bg-emerald-100 text-emerald-800 border border-emerald-200'
-                              : 'bg-gray-100 text-gray-700 border-emerald-200'
-                            }`}>{job.status}</span>
-                          </td>
-                        </tr>)}
+                        : paginatedJobs.map((job) => (
+                            <tr
+                              key={job.id}
+                              className="hover:bg-blue-50/30 transition-all duration-200 border-b border-gray-100/60"
+                            >
+                              <td className="px-6 py-5 whitespace-nowrap minx-w-[200px] sm:min-w-0">
+                                <div>
+                                  <div className="text-sm font-semibold text-gray-900">
+                                    {job.title}
+                                  </div>
+                                  <div className="text-xs text-gray-500 font-medium">
+                                    {job.company}
+                                  </div>
+                                </div>
+                              </td>
+                              <td className="px-6 py-5 whitespace-nowrap min-w-[120px] sm:min-w-0">
+                                <span
+                                  className={`inline-flex px-3 py-1.5 text-xs font-semibold rounded-full ${
+                                    job.status === "Active"
+                                      ? "bg-emerald-100 text-emerald-800 border border-emerald-200"
+                                      : "bg-gray-100 text-gray-700 border-emerald-200"
+                                  }`}
+                                >
+                                  {job.status}
+                                </span>
+                              </td>
+                              <td className="px-6 py-5 whitespace-nowrap min-w-[130px] sm:min-w-0">
+                                <button
+                                  onClick={() =>
+                                    navigate("/applicants", {
+                                      state: { jobId: job.id },
+                                    })
+                                  }
+                                  className="flex items-center text-sm text-blue-600 hover:text-blue-800 font-semibold transition-colors duration-200 hover:bg-blue-50 px-2 py-1 rounded-lg"
+                                >
+                                  <Users className="w-4 h-4 mr-1.5"/>
+                                  {job.applicants}
+                                </button>
+                              </td>
+                            </tr>
+                          ))}
                     </tbody>
                   </table>
                 </div>

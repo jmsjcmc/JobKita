@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import DashboardLayout from "../../components/layout/DashboardLayout";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   AlertCircle,
   Briefcase,
@@ -34,7 +34,7 @@ export default function JobPostingForm() {
     salaryMin: "",
     salaryMax: "",
     isRemote: false,
-    currency: ""
+    currency: "",
   });
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -142,6 +142,38 @@ export default function JobPostingForm() {
     const validationErrors = validateForm(formData);
     return Object.keys(validationErrors).length === 0;
   };
+
+  useEffect(() => {
+    const fetchJobDetails = async () => {
+      if (jobId) {
+        try {
+          const response = await axiosInstance.get(
+            API_PATHS.JOBS.GET_JOB_BY_ID(jobId)
+          );
+          const jobData = response.data;
+          if (jobData) {
+            setFormData({
+              jobTitle: jobData.title,
+              location: jobData.location,
+              category: jobData.category,
+              jobType: jobData.type,
+              description: jobData.description,
+              requirements: jobData.requirements,
+              salaryMin: jobData.salaryMin,
+              salaryMax: jobData.salaryMax,
+            });
+          }
+        } catch (error) {
+          console.error("Error fetching job details");
+          if (error.response) {
+            console.error("API Error:", error.response.data.message);
+          }
+        }
+      }
+    };
+    fetchJobDetails();
+    return () => {}
+  }, []);
 
   if (isPreview) {
     return (

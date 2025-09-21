@@ -327,7 +327,9 @@ export default function ManageJobs() {
                                       onClick={() => handleStatusChange(job.id)}
                                     >
                                       <X className="w-4 h-4" />
-                                      <span className="hidden sm:inline">Close</span>
+                                      <span className="hidden sm:inline">
+                                        Close
+                                      </span>
                                     </button>
                                   ) : (
                                     <button
@@ -335,11 +337,16 @@ export default function ManageJobs() {
                                       onClick={() => handleStatusChange(job.id)}
                                     >
                                       <Plus className="h-4 w-4" />
-                                      <span className="hidden sm:inline">Activate</span>
+                                      <span className="hidden sm:inline">
+                                        Activate
+                                      </span>
                                     </button>
                                   )}
-                                  <button className="text-red-600 hover:text-red-800 p-2 rounded-lg hover:bg-red-50 transition-colors duration-200" onClick={() => handleDeleteJob(job.id)}>
-                                    <Trash2 className="h-4 w-4"/>
+                                  <button
+                                    className="text-red-600 hover:text-red-800 p-2 rounded-lg hover:bg-red-50 transition-colors duration-200"
+                                    onClick={() => handleDeleteJob(job.id)}
+                                  >
+                                    <Trash2 className="h-4 w-4" />
                                   </button>
                                 </div>
                               </td>
@@ -349,6 +356,62 @@ export default function ManageJobs() {
                   </table>
                 </div>
               )}
+            </div>
+
+            {/* Pagination */}
+            <div className="mt-6 flex items-center justify-between">
+              <div className="flex-1 flex justify-between sm:hidden">
+                <button
+                  className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                  disabled={currentPage === 1}
+                >
+                  Previous
+                </button>
+                <button
+                  className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  onClick={() =>
+                    setCurrentPage(Math.min(totalPages, currentPage + 1))
+                  }
+                  disabled={currentPage === totalPages}
+                >
+                  Next
+                </button>
+              </div>
+              <div className="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                <div>
+                  <p className="text-sm text-gray-700">
+                    Showing <span className="font-medium">{startIndex + 1}</span> to{" "}
+                    <span className="font-medium">
+                      {Math.min(
+                        startIndex + itemsPerPage,
+                        filteredAndSortedJobs.length
+                      )}
+                    </span>{" "}
+                    of <span className="font-medium">{filteredAndSortedJobs.length}</span>{" "}
+                    result
+                  </p>
+                </div>
+                <div>
+                  <nav className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px">
+                    <button
+                      className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500"
+                      onClick={() =>
+                        setCurrentPage(Math.max(1, currentPage - 1))
+                      }
+                      disabled={currentPage === 1}
+                    >Previous</button>{Array.from({ length: totalPages}, (_, i) => i + 1).map((page) =>(
+                      <button className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
+                        currentPage === page
+                        ? 'z-10 bg-blue-50 border-blue-500 text-blue-600'
+                        : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
+                      }`} key={page} onClick={() => setCurrentPage(page)}>{page}</button>
+                    ))}
+                    <button className="" onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                      disabled={currentPage === totalPages}>Next</button>
+                  </nav>
+                </div>
+              </div>
             </div>
           </div>
         </div>

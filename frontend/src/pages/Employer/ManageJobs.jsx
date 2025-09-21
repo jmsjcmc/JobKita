@@ -4,7 +4,16 @@ import { useEffect, useMemo, useState } from "react";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import moment from "moment";
-import { ChevronDown, ChevronUp, Plus, Search, Users } from "lucide-react";
+import {
+  ChevronDown,
+  ChevronUp,
+  Edit,
+  Plus,
+  Search,
+  Trash2,
+  Users,
+  X,
+} from "lucide-react";
 import toast from "react-hot-toast";
 
 export default function ManageJobs() {
@@ -296,9 +305,43 @@ export default function ManageJobs() {
                                   }
                                   className="flex items-center text-sm text-blue-600 hover:text-blue-800 font-semibold transition-colors duration-200 hover:bg-blue-50 px-2 py-1 rounded-lg"
                                 >
-                                  <Users className="w-4 h-4 mr-1.5"/>
+                                  <Users className="w-4 h-4 mr-1.5" />
                                   {job.applicants}
                                 </button>
+                              </td>
+                              <td className="px-6 py-5 whitespace-nowrap text-sm font-medium min-w-[180px] sm:min-w-0">
+                                <div className="flex space-x-2">
+                                  <button
+                                    className="text-blue-600 hover:text-blue-800 p-2 rounded-lg hover:bg-blue-50 transition-colors duration-200"
+                                    onClick={() =>
+                                      navigate("/post-job", {
+                                        state: { jobId: job.id },
+                                      })
+                                    }
+                                  >
+                                    <Edit className="h-4 w-4" />
+                                  </button>
+                                  {job.status === "Active" ? (
+                                    <button
+                                      className="flex items-center gap-2 text-xs text-orange-600 hover:text-orange-800 p-2 rounded-lg hover:bg-orange-50 transition-colors duration-200"
+                                      onClick={() => handleStatusChange(job.id)}
+                                    >
+                                      <X className="w-4 h-4" />
+                                      <span className="hidden sm:inline">Close</span>
+                                    </button>
+                                  ) : (
+                                    <button
+                                      className="flex items-center gap-2 text-xs text-green-600 hover:text-green-800 p-2 rounded-lg hover:bg-green-50 transition-colors duration-200"
+                                      onClick={() => handleStatusChange(job.id)}
+                                    >
+                                      <Plus className="h-4 w-4" />
+                                      <span className="hidden sm:inline">Activate</span>
+                                    </button>
+                                  )}
+                                  <button className="text-red-600 hover:text-red-800 p-2 rounded-lg hover:bg-red-50 transition-colors duration-200" onClick={() => handleDeleteJob(job.id)}>
+                                    <Trash2 className="h-4 w-4"/>
+                                  </button>
+                                </div>
                               </td>
                             </tr>
                           ))}

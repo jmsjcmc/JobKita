@@ -407,7 +407,7 @@ export default function ManageJobs() {
                         : 'bg-white border-gray-300 text-gray-500 hover:bg-gray-50'
                       }`} key={page} onClick={() => setCurrentPage(page)}>{page}</button>
                     ))}
-                    <button className="" onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                    <button className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed" onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
                       disabled={currentPage === totalPages}>Next</button>
                   </nav>
                 </div>

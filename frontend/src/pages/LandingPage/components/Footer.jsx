@@ -25,9 +25,9 @@ export default function Footer() {
                     {/* Copyright */}
                     <div className="space-y-2">
                         <p className={`text-sm text-gray-600`}>
-                            © {new Date().getFullYear()} Time To Program.
+                            © {new Date().getFullYear()} JobKita.
                         </p>
-                        <p className={`text-xs text-gray-500`}>Test Progress</p>
+                        <p className={`text-xs text-gray-500`}>Test Progress Application Only</p>
                     </div>
                 </div>
             </div>

@@ -8,6 +8,7 @@ import { X } from "lucide-react";
 import FilterContent from "./components/FilterContent";
 import { toast } from "react-hot-toast";
 import SearchHeader from "./components/SearchHeader";
+import Navbar from "../../components/layout/Navbar";
 
 export default function JobSeekerDashboard() {
   const { user } = useAuth();
@@ -169,6 +170,7 @@ export default function JobSeekerDashboard() {
   }
   return (
     <div className="bg-gradient-to-br from-blue-50 via-white to-purple-50">
+      <Navbar />
       <div className="min-h-screen mt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 lg:py-8">
           <SearchHeader

@@ -39,7 +39,7 @@ export default function JobCard({
             <h3 className="font-semibold text-gray-900 text-base group-hover:text-blue-600 transition-colors leading-snug">{job?.title}</h3>
             <p className="text-gray-600 text-sm flex items-center gap-2 mt-1">
               <Building className="w-3.5 h-3.5" />
-              {job?.company?.companyLogo}
+              {job?.company?.companyName}
             </p>
           </div>
         </div>
@@ -81,18 +81,18 @@ export default function JobCard({
           <span className="flex items-center gap-1.5 bg-gray-100 text-gray-700 px-3 py-1 rounded-full font-medium">{job?.category}</span>
         </div>
       </div>
-      <div className="">
-        <div className="">
-          <span className="">
-            <Calendar className="" />
+      <div className="flex items-center justify-between text-xs font-medium text-gray-500 mb-5 pb-4 border-b border-gray-100">
+        <div className="flex items-center gap-4">
+          <span className="flex items-center gap-1.5">
+            <Calendar className="w-3.5 h-3.5"/>
             {job?.createdAt
               ? moment(job.createdAt).format("Do MMM YYYY")
               : "N/A"}
           </span>
         </div>
       </div>
-      <div className="">
-        <div className="">{formatSalary(job?.salaryMin, job?.salaryMax)}</div>
+      <div className="flex items-center justify-between">
+        <div className="text-blue-600 font-semibold text-lg">{formatSalary(job?.salaryMin, job?.salaryMax)}</div>
         {!saved && (
           <>
             {job?.applicationStatus ? (
@@ -100,7 +100,7 @@ export default function JobCard({
             ) : (
               !hideApply && (
                 <button
-                  className=""
+                  className="bg-gradient-to-r from-blue-50 to-blue-50 text-sm text-blue-700 hover:text-white px-6 py-2.5 rounded-xl hover:from-blue-500 hover:to-blue-600 transition-all duration-200 font-semibold transform hover:-translate-y-0.5"
                   onClick={(e) => {
                     e.stopPropagation();
                     onApply();

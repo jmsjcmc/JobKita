@@ -160,6 +160,11 @@ export default function JobSeekerDashboard() {
   };
   const applyToJob = async (jobId) => {
     try {
+      if (jobId){
+        await axiosInstance.post(API_PATHS.APPLICATIONS.APPLY_TO_JOB(jobId));
+        toast.success('Applied to job successfully!');
+      }
+      fetchJobs();
     } catch (error) {
       console.log("Error:", error);
       const errorMsg = error?.response?.data?.message;

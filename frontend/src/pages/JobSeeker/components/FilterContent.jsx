@@ -28,8 +28,8 @@ export default function FilterContent({
   );
   return (
     <>
-      <div className="">
-        <button onClick={clearAllFilters} className="">
+      <div className="flex items-center justify-between mb-6">
+        <button onClick={clearAllFilters} className="text-blue-600 hover:text-blue-700 font-semibold text-sm">
           Clear All
         </button>
       </div>
@@ -38,20 +38,20 @@ export default function FilterContent({
         isExpanded={expandedSections?.jobType}
         onToggle={() => toggleSection("jobType")}
       >
-        <div className="">
-          {JOB_TYPES.map((type) => {
-            <label key={type.value} className="">
+        <div className="space-y-3">
+          {JOB_TYPES.map((type) => (
+            <label key={type.value} className="flex items-center cursor-pointer">
               <input
                 type="checkbox"
-                className=""
+                className="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-500"
                 checked={filters?.type === type.value}
                 onChange={(e) =>
                   handleFilterChange("type", e.target.checked ? type.value : "")
                 }
               />
-              <span className="">{type.value}</span>
-            </label>;
-          })}
+              <span className="ml-3 text-gray-700 font-medium">{type.value}</span>
+            </label>
+          ))}
         </div>
       </FilterSection>
 

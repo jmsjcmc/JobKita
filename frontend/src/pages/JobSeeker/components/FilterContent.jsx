@@ -1,6 +1,6 @@
 import { ChevronDown, ChevronUp } from "lucide-react";
 import React from "react";
-import { JOB_TYPES } from "../../../utils/data";
+import { CATEGORIES, JOB_TYPES } from "../../../utils/data";
 import SalaryRangeSlider from "../../../components/input/SalaryRangeSlider";
 
 export default function FilterContent({
@@ -39,27 +39,55 @@ export default function FilterContent({
         onToggle={() => toggleSection("jobType")}
       >
         <div className="">
-        {JOB_TYPES.map((type) => {
-          <label key={type.value} className="">
-            <input
-              type="checkbox"
-              className=""
-              checked={filters?.type === type.value}
-              onChange={(e) =>
-                handleFilterChange("type", e.target.checked ? type.value : "")
-              }
-            />
-            <span className="">{type.value}</span>
-          </label>;
-        })}
-      </div>
+          {JOB_TYPES.map((type) => {
+            <label key={type.value} className="">
+              <input
+                type="checkbox"
+                className=""
+                checked={filters?.type === type.value}
+                onChange={(e) =>
+                  handleFilterChange("type", e.target.checked ? type.value : "")
+                }
+              />
+              <span className="">{type.value}</span>
+            </label>;
+          })}
+        </div>
       </FilterSection>
-      
-      <FilterSection 
-      title={'Salary Range'}
-      isExpanded={expandedSections.salary}
-      onToggle={() => toggleSection('salary')}>
-        <SalaryRangeSlider />
+
+      <FilterSection
+        title={"Salary Range"}
+        isExpanded={expandedSections.salary}
+        onToggle={() => toggleSection("salary")}
+      >
+        <SalaryRangeSlider
+          filters={filters}
+          handleFilterChange={handleFilterChange}
+        />
+      </FilterSection>
+      <FilterSection
+        title={"Category"}
+        isExpanded={expandedSections?.categories}
+        onToggle={() => toggleSection("categories")}
+      >
+        <div className="">
+          {CATEGORIES.map((type) => (
+            <label key={type.value} className="">
+              <input
+                type="checkbox"
+                className=""
+                checked={filters?.category === type.value}
+                onChange={(e) =>
+                  handleFilterChange(
+                    "category",
+                    e.target.checked ? type.value : ""
+                  )
+                }
+              />
+              <span className="">{type.value}</span>
+            </label>
+          ))}
+        </div>
       </FilterSection>
     </>
   );

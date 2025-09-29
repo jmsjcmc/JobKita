@@ -43,7 +43,7 @@ export default function FilterContent({
             <label key={type.value} className="flex items-center cursor-pointer">
               <input
                 type="checkbox"
-                className="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-500"
+                className="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                 checked={filters?.type === type.value}
                 onChange={(e) =>
                   handleFilterChange("type", e.target.checked ? type.value : "")
@@ -70,12 +70,12 @@ export default function FilterContent({
         isExpanded={expandedSections?.categories}
         onToggle={() => toggleSection("categories")}
       >
-        <div className="">
+        <div className="space-y-3">
           {CATEGORIES.map((type) => (
-            <label key={type.value} className="">
+            <label key={type.value} className="flex items-center cursor-pointer">
               <input
                 type="checkbox"
-                className=""
+                className="rounded border-gray-300 text-blue-600 shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50"
                 checked={filters?.category === type.value}
                 onChange={(e) =>
                   handleFilterChange(
@@ -84,7 +84,7 @@ export default function FilterContent({
                   )
                 }
               />
-              <span className="">{type.value}</span>
+              <span className="ml-3 text-gray-700 font-medium">{type.value}</span>
             </label>
           ))}
         </div>

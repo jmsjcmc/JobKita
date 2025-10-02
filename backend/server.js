@@ -29,9 +29,9 @@ app.use('/api/analytics', analyticsRoutes);
 app.use('/api/applications', applicationRoutes);
 app.use('/api/jobs', jobsRoutes);
 app.use('/api/user', userRoutes);
-app.use('/api/savedJobs', savedJobRoutes);
+app.use('/api/save-jobs', savedJobRoutes);
 
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'), {}))
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server running on port ${PORT} - server.js:37`));

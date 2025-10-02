@@ -121,18 +121,21 @@ export default function DashboardLayout({ activeMenu, children }) {
         </nav>
         {/* Logout */}
         <div className="absolute bottom-4 left-4 right-4">
-          {/* <button
+          <button
             className="w-full flex items-center px-3 py-2.5 text-sm font-medium rounded-lg text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-all duration-200"
             onClick={logout}
           >
             <LogOut className="h-5 w-5 flex-shrink-0 text-gray-500 " />
             {!sidebarCollapsed && <span className="ml-3">Logout</span>}
-          </button> */}
+          </button>
         </div>
       </div>
       {/* Mobile overlay */}
       {isMobile && sidebarOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-25 z-40 backdrop-blur-sm" onClick={() => setSidebarOpen(false)}></div>
+        <div
+          className="fixed inset-0 bg-black bg-opacity-25 z-40 backdrop-blur-sm"
+          onClick={() => setSidebarOpen(false)}
+        ></div>
       )}
       {/* Main content */}
       <div
@@ -144,28 +147,41 @@ export default function DashboardLayout({ activeMenu, children }) {
         <header className="bg-white/80 backdrop-blur-sm border-b border-gray-200 h-16 flex items-center justify-between px-6 sticky top-0 z-30">
           <div className="flex items-center space-x-4">
             {isMobile && (
-              <button className="p-2 rounded-xl hover:bg-gray-100 transition-colors duration-200" onClick={toggleSidebar}>
-                {sidebarOpen ? <X className="h-5 w-5 text-gray-600"/> : <Menu className="h-5 w-5 text-gray-600"/>}
+              <button
+                className="p-2 rounded-xl hover:bg-gray-100 transition-colors duration-200"
+                onClick={toggleSidebar}
+              >
+                {sidebarOpen ? (
+                  <X className="h-5 w-5 text-gray-600" />
+                ) : (
+                  <Menu className="h-5 w-5 text-gray-600" />
+                )}
               </button>
             )}
             <div>
-              <h1 className="text-base font-semibold text-gray-900">Welcome Back!</h1>
-              <p className="text-sm text-gray-500 hidden sm:block">Here's what's happening with your jobs today.</p>
+              <h1 className="text-base font-semibold text-gray-900">
+                Welcome Back!
+              </h1>
+              <p className="text-sm text-gray-500 hidden sm:block">
+                Here's what's happening with your jobs today.
+              </p>
             </div>
           </div>
 
           <div className="flex items-center space-x-3">
             {/* Profile dropdown */}
-            <ProfileDropdown 
-            isOpen={profileDropdownOpen}
-            onToggle={(e) => {
-              e.stopPropagation();
-              setProfileDropdownOpen(!profileDropdownOpen);
-            }}
-            avatar={user?.avatar || ''}
-            companyName={user?.name || ''}
-            email={user?.email || ''}
-            onLogout={logout}/>
+            <ProfileDropdown
+              isOpen={profileDropdownOpen}
+              onToggle={(e) => {
+                e.stopPropagation();
+                setProfileDropdownOpen(!profileDropdownOpen);
+              }}
+              avatar={user?.avatar || ""}
+              companyName={user?.name || ""}
+              email={user?.email || ""}
+              userRole={user?.role || ""}
+              onLogout={logout}
+            />
           </div>
         </header>
 

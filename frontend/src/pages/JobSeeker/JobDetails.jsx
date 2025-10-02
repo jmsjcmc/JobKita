@@ -120,41 +120,41 @@ export default function JobDetails() {
                       <div className="p-3 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-xl">
                         <DollarSign className="h-6 w-6 text-white"/>
                       </div>
-                      <div className="">
-                        <h3 className="">Compensation</h3>
-                        <div className="">
+                      <div>
+                        <h3 className="text-sm font-semibold text-gray-900 mb-1">Compensation</h3>
+                        <div className="text-lg font-bold text-gray-900">
                           {jobDetails.salaryMin} - {jobDetails.salaryMax}
-                          <span className="">per year</span>
+                          <span className="text-lg text-gray-600 font-normal ml-1">per year</span>
                         </div>
                       </div>
                     </div>
-                    <div className="">
-                      <Users className=""/> 
+                    <div className="flex items-center space-x-2 text-sm text-emerald-700 bg-emerald-100 px-3 py-1 rounded-full">
+                      <Users className="h-4 w-4"/> 
                       <span>Competitive</span>
                     </div>
                   </div>
                 </div>
               </div>
               {/* Job Description */}
-              <div className="">
-                <h3 className="">
-                  <div className=""></div>
-                  <span className="">About This Role</span>
+              <div className="space-y-4">
+                <h3 className="text-2xl font-bold text-gray-900 flex items-center space-x-3">
+                  <div className="w-1 h-8 bg-gradient-to-b from-blue-500 to-purple-600 rounded-full"></div>
+                  <span className="text-lg">About This Role</span>
                 </h3>
-                <div className="">
-                  <div className="">
+                <div className="bg-gray-50 border border-gray-100 rounded-xl p-6">
+                  <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
                     {jobDetails.description}
                   </div>
                 </div>
               </div>
               {/* Requirements */}
-              <div className="">
-                <h3 className="">
-                  <div className=""></div>
-                  <span className="">What We're Looking For</span>
+              <div className="space-y-4">
+                <h3 className="text-2xl font-bold text-gray-900 flex items-center space-x-3">
+                  <div className="w-1 h-8 bg-gradient-to-b from-purple-500 to-pink-600 rounded-full"></div>
+                  <span className="text-lg">What We're Looking For</span>
                 </h3>
-                <div className="">
-                  <div className="">
+                <div className="bg-gradient-to-br from-purple-50 to-pink-50 border border-purple-100 rounded-xl p-6">
+                  <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
                     {jobDetails.requirements}
                   </div>
                 </div>

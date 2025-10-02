@@ -1,7 +1,122 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import { useAuth } from '../../context/AuthContext'
+import { useNavigate } from 'react-router-dom';
+import axiosInstance from '../../utils/axiosInstance';
+import { API_PATHS } from '../../utils/apiPaths';
+import toast from 'react-hot-toast';
+import Navbar from '../../components/layout/Navbar';
+import { ArrowLeft, Bookmark, Grid, List } from 'lucide-react';
+import JobCard from '../../components/cards/JobCard';
 
 export default function SavedJobs() {
-  return (
-    <div>SavedJobs</div>
-  )
+  const {user} = useAuth();
+  const navigate = useNavigate();
+  const [savedJobList, setSavedJobList] = useState([]);
+  const [viewMode, setViewMode] = useState('grid');
+  const getSavedJobs = async() => {
+    try {
+      const response = await axiosInstance.get(API_PATHS.JOBS.GET_SAVED_JOBS);
+      setSavedJobList(response.data);
+    } catch (error) {
+      console.error('Error fetching job details:', error);
+    }
+  };
+  const handleUnsaveJob = async(jobId) => {
+    try {
+      await axiosInstance.delete(API_PATHS.JOBS.UNSAVE_JOB(jobId));
+      toast.success('Job removed successfully!');
+      getSavedJobs();
+    } catch (error) {
+      toast.error('Something went wrong! Try again later');
+    }
+  };
+
+  useEffect(() => {
+    if (user) {
+      getSavedJobs();
+    }
+  }, [user]);
+return (
+  <div className="bg-gradient-to-br from-blue-50 via-white to-purple-50">
+    <Navbar />
+    <div className="container mx-auto pt-24">
+      {savedJobList && (
+        <div className="bg-white p-6 rounded-lg">
+          <div className="flex items-center justify-between mb-8">
+            <div className="flex items-center gap-4">
+              <button onClick={() => navigate(-1)} className="group flex items-center space-x-2 px-3.5 py-2.5 text-sm font-medium text-gray-600 hover:text-white bg-white/50 hover:bg-gradient-to-r hover:from-blue-500 hover:to-blue-600 border border-gray-200">
+                <ArrowLeft className="" />
+              </button>
+              <h1 className="">Saved Jobs</h1>
+            </div>
+
+            <div className="">
+              <div className="">
+                <button
+                  onClick={() => setViewMode("grid")}
+                  className={`p-2 rounded-lg transition-colors ${
+                    viewMode === "grid"
+                      ? "bg-blue-600 text-white shadow-sm"
+                      : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                  }`}
+                >
+                  <Grid className="" />
+                </button>
+                <button
+                  onClick={() => setViewMode("list")}
+                  className={`p-2 rounded-lg transition-colors ${
+                    viewMode === "list"
+                      ? "bg-blue-600 text-white shadow-sm"
+                      : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+                  }`}
+                >
+                  <List className="" />
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Content sections */}
+          <div className="">
+            {savedJobList.length === 0 ? (
+              <div className="">
+                <div className="">
+                  <Bookmark className="" />
+                </div>
+                <h3 className="">You haven't saved any jobs yet</h3>
+                <p className="">
+                  Start saving jobs that interest you to view them later.
+                </p>
+                <button
+                  onClick={() => navigate("/find-jobs")}
+                  className=""
+                >
+                  Browse Jobs
+                </button>
+              </div>
+            ) : (
+              <div
+                className={
+                  viewMode === "grid"
+                    ? "grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-4 lg:gap-6"
+                    : "space-y-4 lg:space-y-6"
+                }
+              >
+                {savedJobList.map((savedJob) => (
+                  <JobCard
+                    key={savedJob._id}
+                    job={savedJob?.job}
+                    onClick={() => navigate(`/job/${savedJob?.job._id}`)}
+                    onToggleSave={() => handleUnsaveJob(savedJob?.job._id)}
+                    saved
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  </div>
+);
 }

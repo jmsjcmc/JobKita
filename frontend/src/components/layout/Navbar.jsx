@@ -5,7 +5,7 @@ import { Bookmark, Briefcase } from "lucide-react";
 import ProfileDropdown from "./ProfileDropdown";
 
 export default function Navbar() {
-  const { user, logOut, isAuthenticated } = useAuth();
+  const { user, logout, isAuthenticated } = useAuth();
   const navigate = useNavigate();
   const [profileDropDownOpen, setProfileDropDownOpen] = useState(false);
 
@@ -47,7 +47,7 @@ export default function Navbar() {
                 companyName={user?.name || ""}
                 email={user?.email || ""}
                 userRole={user?.role || ""}
-                onLogout={logOut}
+                onLogout={logout}
               />
             ) : (
               <>

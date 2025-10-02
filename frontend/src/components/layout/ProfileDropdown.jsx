@@ -7,6 +7,7 @@ export default function ProfileDropdown({
   avatar,
   companyName,
   email,
+  userRole,
   onLogout,
 }) {
   const navigate = useNavigate();
@@ -54,7 +55,7 @@ export default function ProfileDropdown({
             View Profile
           </a>
           <div className="border-t border-gray-100 mt-2 pt-2">
-            <a href="#" onClick={onLogout} className="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors">
+            <a onClick={onLogout} className="block px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors">
               Log out
             </a>
           </div>

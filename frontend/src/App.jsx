@@ -11,10 +11,10 @@ import EmployerDashboard from "./pages/Employer/EmployerDashboard";
 import JobPostingForm from "./pages/Employer/JobPostingForm";
 import ApplicationViewer from "./pages/Employer/ApplicationViewer";
 import EmployerProfilePage from "./pages/Employer/EmployerProfilePage";
-import SavedJobs from "./pages/JobSeeker/SavedJObs";
 import UserProfile from "./pages/JobSeeker/UserProfile";
 import ManageJobs from "./pages/Employer/ManageJobs";
 import { AuthProvider } from "./context/AuthContext";
+import SavedJobs from "./pages/JobSeeker/SavedJobs";
 
 function App() {
   return (

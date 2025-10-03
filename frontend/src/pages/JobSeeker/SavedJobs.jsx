@@ -82,15 +82,15 @@ export default function SavedJobs() {
             {/* Content sections */}
             <div className="px-0 pb-8 space-y-8">
               {savedJobList.length === 0 ? (
-                <div className="text-center py-16 lg:py-20 bg-white/60 back">
-                  <div className="">
-                    <Bookmark className="" />
+                <div className="text-center py-16 lg:py-20 bg-white/60 backdrop-blur-xl rounded-2xl border ">
+                  <div className="text-gray-300 mb-6">
+                    <Bookmark className="w-16 h-16 mx-auto" />
                   </div>
-                  <h3 className="">You haven't saved any jobs yet</h3>
-                  <p className="">
+                  <h3 className="text-xl lg:text-2xl font-bold text-gray-900 mb-3">You haven't saved any jobs yet</h3>
+                  <p className="text-gray-600 mb-6">
                     Start saving jobs that interest you to view them later.
                   </p>
-                  <button onClick={() => navigate("/find-jobs")} className="">
+                  <button onClick={() => navigate("/find-jobs")} className="bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 transition-colors">
                     Browse Jobs
                   </button>
                 </div>
